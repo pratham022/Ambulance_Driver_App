@@ -164,6 +164,26 @@ The permission result is invoked once the user decides whether to allow or deny 
         mapView.getMapAsync(this); //after this whenever the map is loaded we go to on mapready method  in this class because we have implemented OnMapReadyCallback
 
 
+        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
+
+        nav = (NavigationView) findViewById(R.id.nav_menu);
+        drawerLayout = (DrawerLayout) findViewById(R.id.drawer);
+
+
+        toggle = new ActionBarDrawerToggle(this, drawerLayout, toolbar, R.string.open, R.string.close);
+        drawerLayout.addDrawerListener(toggle);
+        toggle.syncState();
+
+        nav.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {
+            @Override
+            public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+
+
+                return false;
+            }
+        });
+
 
         txtSource = findViewById(R.id.editTextSource);
         txtDestination = findViewById(R.id.editTextDestination);
