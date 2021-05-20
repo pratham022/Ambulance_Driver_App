@@ -179,6 +179,10 @@ The permission result is invoked once the user decides whether to allow or deny 
             @Override
             public boolean onNavigationItemSelected(@NonNull MenuItem item) {
 
+                if(item.getTitle().equals("Home"))
+                {
+                    Log.e("In drawer Listener","Home ");
+                }
 
                 return false;
             }

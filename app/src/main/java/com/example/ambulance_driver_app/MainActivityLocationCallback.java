@@ -52,7 +52,7 @@ public class MainActivityLocationCallback implements LocationEngineCallback<Loca
     public void onSuccess(LocationEngineResult result) {
         MainActivity activity = activityWeakReference.get();
 
-        if (activity != null) {
+        if (activity != null&&result.getLastLocation()!=null) {
             //will give the latitude and longitude of the origin location
             Location location = result.getLastLocation();
 

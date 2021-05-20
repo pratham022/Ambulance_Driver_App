@@ -28,32 +28,6 @@
             android:layout_height="match_parent"
             app:mapbox_cameraZoom="12" />
 
-
-        <RelativeLayout
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content">
-
-            <androidx.appcompat.widget.Toolbar
-                android:id="@+id/toolbar"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:background="@color/ui"
-                android:title="Navigation Drawer"
-                app:titleTextColor="@color/white">
-
-
-            </androidx.appcompat.widget.Toolbar>
-        </RelativeLayout>
-
-        <com.google.android.material.navigation.NavigationView
-            android:id="@+id/nav_menu"
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            android:layout_gravity="start"
-            app:headerLayout="@layout/header_menu"
-            app:menu="@menu/iconmenu" />
-
-
         <androidx.constraintlayout.widget.ConstraintLayout android:layout_height="match_parent" android:layout_width="match_parent"
             tools:ignore="MissingConstraints">
 
@@ -100,6 +74,34 @@
                 android:layout_marginTop="550dp"/>
 
         </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+        <RelativeLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content">
+
+            <androidx.appcompat.widget.Toolbar
+                android:id="@+id/toolbar"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@color/ui"
+                android:title="Navigation Drawer"
+                app:titleTextColor="@color/white">
+
+
+            </androidx.appcompat.widget.Toolbar>
+        </RelativeLayout>
+
+        <com.google.android.material.navigation.NavigationView
+            android:id="@+id/nav_menu"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_gravity="start"
+            app:headerLayout="@layout/header_menu"
+            app:menu="@menu/iconmenu" />
+
+
+
 
 
     </androidx.drawerlayout.widget.DrawerLayout>
