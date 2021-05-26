@@ -38,7 +38,7 @@ public class BackgroundRegisterWorker extends AsyncTask<String, Void, String> {
         String date=params[5];
 
         String register_url = "";
-        register_url = "http://10.0.2.2/driver_register.php/";
+        register_url = "https://quickcare.000webhostapp.com/driver_register.php/";
         try {
             Log.d(TAG, "Register URL: "+register_url);
             URL url = new URL(register_url);
