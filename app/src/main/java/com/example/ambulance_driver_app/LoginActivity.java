@@ -88,7 +88,7 @@ public class LoginActivity extends AppCompatActivity implements AsyncResponseStr
                 JSONObject jsonObject =  response.getJSONObject("data");
                 String phone=jsonObject.getString("phone");
                 String name=jsonObject.getString("first_name")+" "+jsonObject.getString("last_name");
-                String driver_id=jsonObject.getString("driver_id");
+                String driver_id=jsonObject.getString("id");
 
                 SharedPreferences sharedPreferences = getSharedPreferences("MySharedPrefDriver", MODE_PRIVATE);
                 SharedPreferences.Editor myEdit = sharedPreferences.edit();
