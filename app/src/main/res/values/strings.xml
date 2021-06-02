@@ -15,6 +15,7 @@
     <string name="name">Name</string>
     <string name="address">Address</string>
     <string name="exp_date">Expiry Date</string>
+    <string name="AddDetail">Edit Details</string>
     <string name="access_token">pk.eyJ1IjoidGFuYXlhNTA4IiwiYSI6ImNrbHM4N2tnNjFjdTcydm53YWJtNTNoNTQifQ.O-tlugyUNXfqRgV7w0kyyw</string>
     <string name="user_location_permission_not_granted">Location Access Permission Not Granted</string>
     <string name="user_location_permission_explanation">Without Permission Access Cannot Find Your Location</string>

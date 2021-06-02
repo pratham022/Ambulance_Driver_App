@@ -89,12 +89,14 @@ public class LoginActivity extends AppCompatActivity implements AsyncResponseStr
                 String phone=jsonObject.getString("phone");
                 String name=jsonObject.getString("first_name")+" "+jsonObject.getString("last_name");
                 String driver_id=jsonObject.getString("id");
+                String password = jsonObject.getString("password");
 
                 SharedPreferences sharedPreferences = getSharedPreferences("MySharedPrefDriver", MODE_PRIVATE);
                 SharedPreferences.Editor myEdit = sharedPreferences.edit();
                 myEdit.putString("phone", phone);
                 myEdit.putString("name",name);
                 myEdit.putString("driver_id",driver_id);
+                myEdit.putString("password", password);
                 myEdit.apply();
 
                 Intent i = new Intent(this, MainActivity.class);

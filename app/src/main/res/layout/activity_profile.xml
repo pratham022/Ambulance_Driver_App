@@ -1,0 +1,304 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.appcompat.widget.LinearLayoutCompat xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context=".ProfileActivity">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/ui"
+
+        >
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/username"
+            android:text="Username"
+            android:textSize="35dp"
+            android:layout_alignParentLeft="true"
+            android:layout_marginTop="20dp"
+            android:textColor="@color/white"
+            android:layout_marginLeft="20dp"
+            >
+
+        </TextView>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/phone"
+            android:text="91-7774031715"
+            android:textSize="20dp"
+            android:layout_alignParentLeft="true"
+            android:layout_marginTop="80dp"
+            android:layout_marginLeft="20dp"
+            android:textColor="@color/white"
+            />
+
+
+
+        <ImageView
+            android:layout_width="100dp"
+            android:layout_height="100dp"
+            android:src="@drawable/profile"
+            android:layout_alignParentRight="true"
+            android:id="@+id/profilepic"
+            >
+
+        </ImageView>
+
+    </RelativeLayout>
+
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginTop="20dp"
+        android:layout_marginLeft="10dp"
+        android:orientation="vertical">
+
+        <TextView
+            android:id="@+id/textView"
+            android:layout_width="match_parent"
+            android:layout_height="42dp"
+            android:layout_marginStart="32dp"
+            android:layout_marginLeft="32dp"
+            android:layout_marginTop="16dp"
+            android:layout_marginEnd="32dp"
+            android:layout_marginRight="32dp"
+            android:gravity="center_horizontal"
+            android:text="@string/AddDetail"
+            android:textAlignment="center"
+            android:textSize="24sp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <EditText
+            android:id="@+id/txtName"
+            android:layout_width="match_parent"
+            android:layout_height="42dp"
+            android:hint="@string/name"
+            android:layout_marginStart="32dp"
+            android:layout_marginLeft="32dp"
+            android:layout_marginTop="32dp"
+            android:layout_marginEnd="32dp"
+            android:layout_marginRight="32dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/txtView" />
+
+        <EditText
+            android:id="@+id/txtAddress"
+            android:layout_width="match_parent"
+            android:layout_height="42dp"
+            android:hint="@string/address"
+            android:layout_marginStart="32dp"
+            android:layout_marginLeft="32dp"
+            android:layout_marginTop="32dp"
+            android:layout_marginEnd="32dp"
+            android:layout_marginRight="32dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/txtName" />
+
+
+        <EditText
+            android:id="@+id/txtEmail"
+            android:layout_width="match_parent"
+            android:layout_height="42dp"
+            android:hint="@string/email"
+            android:layout_marginStart="32dp"
+            android:layout_marginLeft="32dp"
+            android:layout_marginTop="32dp"
+            android:layout_marginEnd="32dp"
+            android:layout_marginRight="32dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/txtPhone" />
+
+        <EditText
+            android:id="@+id/txtPassword"
+            android:layout_width="match_parent"
+            android:layout_height="42dp"
+            android:layout_marginStart="32dp"
+            android:layout_marginLeft="32dp"
+            android:layout_marginTop="32dp"
+            android:layout_marginEnd="32dp"
+            android:layout_marginRight="32dp"
+            android:autofillHints=""
+            android:hint="@string/password"
+            android:inputType="textPassword"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/txtEmail" />
+
+        <EditText
+            android:id="@+id/txtPassword2"
+            android:layout_width="match_parent"
+            android:layout_height="42dp"
+            android:layout_marginStart="32dp"
+            android:layout_marginLeft="32dp"
+            android:layout_marginTop="32dp"
+            android:layout_marginEnd="32dp"
+            android:layout_marginRight="32dp"
+            android:autofillHints=""
+            android:hint="@string/confirm_password"
+            android:inputType="textPassword"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/txtPassword" />
+
+        <Button
+            android:id="@+id/btnRegister"
+            android:layout_width="match_parent"
+            android:layout_height="42dp"
+            android:layout_marginStart="32dp"
+            android:layout_marginLeft="32dp"
+            android:layout_marginTop="40dp"
+            android:layout_marginEnd="32dp"
+            android:layout_marginRight="32dp"
+            android:text="@string/AddDetail"
+            android:onClick="EditDetails"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/txtPassword2" />
+
+
+
+        <!--        <LinearLayout-->
+        <!--            android:layout_width="wrap_content"-->
+        <!--            android:layout_height="wrap_content"-->
+        <!--            android:layout_marginLeft="10dp"-->
+        <!--            android:layout_marginTop="50dp"-->
+        <!--            android:orientation="horizontal"-->
+        <!--            >-->
+        <!--            <ImageView-->
+        <!--                android:layout_width="50dp"-->
+        <!--                android:layout_height="50dp"-->
+        <!--                android:src="@drawable/ic_baseline_info_24"-->
+        <!--                />-->
+
+
+        <!--            <TextView-->
+        <!--                android:layout_width="wrap_content"-->
+        <!--                android:layout_height="wrap_content"-->
+        <!--                android:text="Info"-->
+        <!--                android:textSize="20dp"-->
+        <!--                android:layout_marginTop="15dp"-->
+        <!--                android:layout_marginLeft="10dp"-->
+        <!--                />-->
+
+
+
+
+
+
+
+        <!--        </LinearLayout>-->
+
+
+        <!--        <LinearLayout-->
+        <!--            android:layout_width="wrap_content"-->
+        <!--            android:layout_height="wrap_content"-->
+        <!--            android:layout_marginLeft="10dp"-->
+        <!--            android:layout_marginTop="50dp"-->
+        <!--            android:orientation="horizontal">-->
+
+
+        <!--            <ImageView-->
+        <!--                android:layout_width="50dp"-->
+        <!--                android:layout_height="50dp"-->
+        <!--                android:src="@drawable/ic_baseline_home_24"-->
+        <!--                />-->
+
+        <!--            <TextView-->
+        <!--                android:layout_width="wrap_content"-->
+        <!--                android:layout_height="wrap_content"-->
+        <!--                android:text="Home"-->
+        <!--                android:textSize="20dp"-->
+        <!--                android:layout_marginTop="15dp"-->
+        <!--                android:layout_marginLeft="10dp"-->
+        <!--                />-->
+
+
+
+
+        <!--        </LinearLayout>-->
+
+
+        <!--        <LinearLayout-->
+        <!--            android:layout_width="wrap_content"-->
+        <!--            android:layout_height="wrap_content"-->
+        <!--            android:layout_marginLeft="10dp"-->
+        <!--            android:layout_marginTop="50dp"-->
+        <!--            android:orientation="horizontal">-->
+
+
+        <!--            <ImageView-->
+        <!--                android:layout_width="50dp"-->
+        <!--                android:layout_height="50dp"-->
+        <!--                android:src="@drawable/ic_baseline_favorite_24"-->
+        <!--                />-->
+
+        <!--            <TextView-->
+        <!--                android:layout_width="wrap_content"-->
+        <!--                android:layout_height="wrap_content"-->
+        <!--                android:text="Favourite"-->
+        <!--                android:textSize="20dp"-->
+        <!--                android:layout_marginTop="15dp"-->
+        <!--                android:layout_marginLeft="10dp"-->
+        <!--                />-->
+
+
+
+        <!--        </LinearLayout>-->
+
+        <!--        <LinearLayout-->
+        <!--            android:layout_width="wrap_content"-->
+        <!--            android:layout_height="wrap_content"-->
+        <!--            android:layout_marginLeft="10dp"-->
+        <!--            android:layout_marginTop="50dp"-->
+        <!--            android:orientation="horizontal">-->
+
+        <!--            <ImageView-->
+        <!--                android:layout_width="50dp"-->
+        <!--                android:layout_height="50dp"-->
+        <!--                android:src="@drawable/ic_baseline_login_24"-->
+
+        <!--                />-->
+
+
+        <!--            <Button-->
+        <!--                android:layout_width="wrap_content"-->
+        <!--                android:layout_height="wrap_content"-->
+        <!--                android:text="Logout"-->
+        <!--                android:textSize="20dp"-->
+        <!--                android:background="@color/white"-->
+        <!--                android:layout_marginTop="15dp"-->
+        <!--                android:layout_marginLeft="10dp"-->
+        <!--                />-->
+
+
+
+
+        <!--        </LinearLayout>-->
+
+
+
+
+    </LinearLayout>
+
+</androidx.appcompat.widget.LinearLayoutCompat>

@@ -13,6 +13,7 @@
         android:layout_marginTop="20dp"/>
 
     <TextView
+        android:id="@+id/usernameText"
         android:layout_width="100dp"
         android:layout_height="100dp"
         android:textColor="@color/white"

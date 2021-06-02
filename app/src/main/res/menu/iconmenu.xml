@@ -21,13 +21,11 @@
         android:icon="@drawable/ic_baseline_local_hospital_24"
         android:title="Hospitals Near Me"/>
 
-    <item android:id="@+id/menu_location"
-        android:icon="@drawable/ic_baseline_my_location_24"
-        android:title="Location"/>
 
-    <item android:id="@+id/menu_setting"
-        android:icon="@drawable/ic_baseline_settings_24"
-        android:title="Settings"/>
+
+    <item android:id="@+id/logout"
+        android:icon="@drawable/ic_baseline_login_24"
+        android:title="Logout"/>
 
 
 

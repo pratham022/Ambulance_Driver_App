@@ -3,6 +3,8 @@ package com.example.ambulance_driver_app;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
+import android.content.Intent;
+import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
@@ -10,6 +12,7 @@ import android.graphics.drawable.Drawable;
 import android.location.Address;
 import android.location.Geocoder;
 import android.location.Location;
+import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
@@ -18,6 +21,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.DrawableRes;
@@ -175,13 +179,30 @@ The permission result is invoked once the user decides whether to allow or deny 
         drawerLayout.addDrawerListener(toggle);
         toggle.syncState();
 
+        SharedPreferences sh = getSharedPreferences("MySharedPrefDriver", MODE_PRIVATE);
+        NavigationView navigationView = (NavigationView) findViewById(R.id.nav_menu);
+        View headerView = navigationView.getHeaderView(0);
+        TextView navUsername = (TextView) headerView.findViewById(R.id.usernameText);
+        navUsername.setText(sh.getString("name",null));
+
+
         nav.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {
             @Override
             public boolean onNavigationItemSelected(@NonNull MenuItem item) {
 
-                if(item.getTitle().equals("Home"))
+
+                if(item.getTitle().equals("Profile"))
                 {
-                    Log.e("In drawer Listener","Home ");
+                    // Log.e("Open Profile","opening");
+                    openProfile();
+                }
+                else if(item.getTitle().equals("Call"))
+                {
+                    openCall();
+                }
+                else if(item.getTitle().equals("Logout"))
+                {
+                    logoutFrom();
                 }
 
                 return false;
@@ -197,7 +218,30 @@ The permission result is invoked once the user decides whether to allow or deny 
 
     }
 
+    private void openProfile()
+    {
+        Intent intent=new Intent(this,ProfileActivity.class);
+        startActivity(intent);
+    }
 
+    private void openCall()
+    {
+        Intent intent = new Intent(Intent.ACTION_DIAL);
+        intent.setData(Uri.parse("tel:0123456789"));
+        startActivity(intent);
+    }
+
+    private void logoutFrom()
+    {
+        SharedPreferences sh = getSharedPreferences("MySharedPrefDriver", MODE_PRIVATE);
+        SharedPreferences.Editor editor = sh.edit();
+        editor.remove("name");
+        editor.remove("phone");
+        editor.remove("driver_id");
+        Intent intent=new Intent(this,LoginActivity.class);
+        startActivity(intent);
+        editor.commit();
+    }
 
     private void addDestinationIconSymbolLayer(@NonNull Style loadedMapStyle) {
         loadedMapStyle.addImage("destination-icon-id",
@@ -239,28 +283,6 @@ The permission result is invoked once the user decides whether to allow or deny 
 
 
                         mapboxMap.addOnMapClickListener(MainActivity.this);
-                        button = findViewById(R.id.startButton);
-                        button.setOnClickListener(new View.OnClickListener() {
-                            @Override
-                            public void onClick(View v) {
-
-                                // String destination=txtDestination.getText().toString();
-                                getDestination();
-//                                boolean simulateRoute = true;
-//                                NavigationLauncherOptions options = NavigationLauncherOptions.builder()
-//                                        .directionsRoute(currentRoute)
-//                                        .shouldSimulateRoute(simulateRoute)
-//                                        .build();
-//                                // Call this method with Context from within an Activity
-//                                NavigationLauncher.startNavigation(MainActivity.this, options);
-
-//                                BackgroundBookCab backgroundBookCab=new BackgroundBookCab(getApplicationContext());
-//                                backgroundBookCab.delegate=MainActivity.this;
-//                                backgroundBookCab.execute(String.valueOf(source_pt.latitude()),String.valueOf(source_pt.longitude()),String.valueOf(destination_pt.latitude()),String.valueOf(destination_pt.longitude()),String.valueOf(7),String.valueOf(1));
-
-
-                            }
-                        });
 
                     }
                 });
@@ -546,9 +568,7 @@ The permission result is invoked once the user decides whether to allow or deny 
 
 
 
-        //getRoute(originPoint, destinationPoint);
-        button.setEnabled(true);
-        button.setBackgroundResource(R.color.mapbox_blue);
+        getRoute(originPoint, destinationPoint);
         return true;
     }
 
