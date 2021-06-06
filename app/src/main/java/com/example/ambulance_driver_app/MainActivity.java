@@ -117,12 +117,14 @@ public class MainActivity extends AppCompatActivity implements
     // source and destination edit texts
     public static EditText txtSource;
     public static EditText txtDestination;
+    public static  Context cxt;
     public Location source;
     public Point source_pt,destination_pt;
     Marker destination_mk=null;
 
     private String rideId = "";
     private String cabId = "";
+    GetToken getToken;
 
 
 
@@ -179,11 +181,19 @@ The permission result is invoked once the user decides whether to allow or deny 
         drawerLayout.addDrawerListener(toggle);
         toggle.syncState();
 
+//        MyFirebaseInstanceIDService myFirebaseInstanceIDService=new MyFirebaseInstanceIDService();
+//        myFirebaseInstanceIDService.onTokenRefresh();
+
         SharedPreferences sh = getSharedPreferences("MySharedPrefDriver", MODE_PRIVATE);
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_menu);
         View headerView = navigationView.getHeaderView(0);
         TextView navUsername = (TextView) headerView.findViewById(R.id.usernameText);
         navUsername.setText(sh.getString("name",null));
+
+        cxt=getApplicationContext();
+
+
+
 
 
         nav.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {
@@ -214,7 +224,13 @@ The permission result is invoked once the user decides whether to allow or deny 
         txtDestination = findViewById(R.id.editTextDestination);
 
 
+        startFetchingToken();
 
+    }
+
+    private void startFetchingToken(){
+        getToken=new GetToken();
+        getToken.getToken();
 
     }
 

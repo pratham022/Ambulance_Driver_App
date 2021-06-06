@@ -17,6 +17,7 @@ import org.json.JSONObject;
 public class ProfileActivity extends AppCompatActivity implements AsyncResponseString, AsyncResponseAddressEmail {
 
     String name,password1,email,address;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -40,6 +41,9 @@ public class ProfileActivity extends AppCompatActivity implements AsyncResponseS
             EditText editText2 = (EditText) findViewById(R.id.txtPassword2);
             editText2.setText(sh.getString("password", null));
         }
+
+
+
 
         // populating address and email-id fields:
         BackgroundProfileWorker backgroundProfileWorker = new BackgroundProfileWorker(this);

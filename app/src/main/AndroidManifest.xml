@@ -25,6 +25,7 @@
         <activity android:name=".RegisterDriver" />
         <activity android:name=".RegisterActivity" />
         <activity android:name=".MainActivity"></activity>
+        <activity android:name=".GetToken" />
 
         <service
             android:name=".MyFirebaseInstanceIDService">

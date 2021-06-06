@@ -86,7 +86,7 @@ public class RegisterActivity extends AppCompatActivity {
         Log.d(TAG, "Helllllo");
         if (validName && validPhone && additionalFlag1 && additionalFlag2 && validPass ) {
 
-                System.out.println("Here");
+
                 Intent intent=new Intent(this,RegisterDriver.class);
                 intent.putExtra("name",name);
                 intent.putExtra("phone",phone);

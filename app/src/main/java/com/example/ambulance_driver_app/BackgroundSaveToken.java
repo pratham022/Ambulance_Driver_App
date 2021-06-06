@@ -16,39 +16,31 @@ import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.URLEncoder;
 
-public class BackgroundRegisterWorker extends AsyncTask<String, Void, String> {
+public class BackgroundSaveToken extends AsyncTask<String, Void, String> {
 
     Context context;
-    private String TAG = "BackgroundLoginWorker";
 
     public AsyncResponseString delegate = null;
 
-    BackgroundRegisterWorker(Context ctx) {
-        context = ctx;
+    BackgroundSaveToken(Context cxt)
+    {
+        context=cxt;
     }
 
+
     @Override
-    protected String doInBackground(String... params) {
+    protected String doInBackground(String... strings) {
 
-        String phone = params[0];
-        String name = params[1];
-        String pass1 = params[2];
-        String license=params[3];
-        String res_address=params[4];
-        String date=params[5];
+        String phone=strings[0];
+        String token=strings[1];
 
-        Log.e("phone",phone);
-        Log.e("name",name);
-        Log.e("password",pass1);
-        Log.e("license",license);
-        Log.e("res_address",res_address);
-        Log.e("date",date);
+        Log.e("token background worker",token);
 
-        String register_url = "";
-        register_url = "https://quickcare.000webhostapp.com/driver_register.php/";
+        String  saveToken_url = "https://quickcare.000webhostapp.com/driverToken.php";
+
         try {
-            Log.d(TAG, "Register URL: "+register_url);
-            URL url = new URL(register_url);
+
+            URL url = new URL(saveToken_url);
             HttpURLConnection httpURLConnection = (HttpURLConnection) url.openConnection();
             httpURLConnection.setRequestMethod("POST");
             httpURLConnection.setDoOutput(true);
@@ -57,13 +49,10 @@ public class BackgroundRegisterWorker extends AsyncTask<String, Void, String> {
             BufferedWriter bufferedWriter = new BufferedWriter(new OutputStreamWriter(outputStream, "UTF-8"));
 
             String post_data = "";
-            post_data = URLEncoder.encode("phone", "UTF-8")+"="+URLEncoder.encode(phone, "UTF-8")
-                    + "&&" +URLEncoder.encode("name", "UTF-8")+"="+URLEncoder.encode(name, "UTF-8")
-                    + "&&" +URLEncoder.encode("password", "UTF-8")+"="+URLEncoder.encode(pass1, "UTF-8")
-                    +"&&"+URLEncoder.encode("license_no", "UTF-8")+"="+URLEncoder.encode(license, "UTF-8")
-                    +"&&"+URLEncoder.encode("expiry_date", "UTF-8")+"="+URLEncoder.encode(date, "UTF-8")
-                    +"&&"+URLEncoder.encode("address", "UTF-8")+"="+URLEncoder.encode(res_address, "UTF-8");
 
+            post_data = URLEncoder.encode("phone", "UTF-8")+"="+URLEncoder.encode(phone, "UTF-8")
+
+                    + "&&" +URLEncoder.encode("token", "UTF-8")+"="+URLEncoder.encode(token, "UTF-8");
 
             bufferedWriter.write(post_data);
             bufferedWriter.flush();
@@ -74,21 +63,25 @@ public class BackgroundRegisterWorker extends AsyncTask<String, Void, String> {
             BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(inputStream, "iso-8859-1"));
             String result = "";
             String line = "";
+
             while ((line = bufferedReader.readLine()) != null) {
                 result += line;
-                // System.out.println(line);
             }
             bufferedReader.close();
             inputStream.close();
             httpURLConnection.disconnect();
-            Log.d(TAG, result);
 
+            Log.e("token saved ",result);
             return result;
         } catch (MalformedURLException e) {
             e.printStackTrace();
         } catch (IOException e) {
             e.printStackTrace();
         }
+
+
+
+
         return null;
     }
 
@@ -97,6 +90,4 @@ public class BackgroundRegisterWorker extends AsyncTask<String, Void, String> {
         super.onPostExecute(s);
         delegate.processStringFinish(s);
     }
-
-
 }
