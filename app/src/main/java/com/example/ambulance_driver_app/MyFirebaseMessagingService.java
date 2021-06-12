@@ -1,6 +1,7 @@
 package com.example.ambulance_driver_app;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.util.Log;
 
 import com.google.firebase.messaging.FirebaseMessagingService;
@@ -37,7 +38,7 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
         Log.e(TAG, "Notification JSON " + json.toString());
         try {
             //getting the json data
-            JSONObject data = json.getJSONObject("data");
+            JSONObject data = json.getJSONObject("notification");
 
             //parsing json data
             String title = data.getString("title");
@@ -59,10 +60,32 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
                 //displaying a big notification
                 mNotificationManager.showBigNotification(title, message, imageUrl, intent);
             }
+
+
+            String customerPhone = message.substring(message.length() - 10);
+
+            SharedPreferences sh = getSharedPreferences("MySharedPrefDriver", MODE_PRIVATE);
+            String driverPhone = sh.getString("phone", null);
+
+            Log.e(TAG, "Fetched phone numbers from db..." + customerPhone + " "+ driverPhone);
+
+//            BackgroundGetRideDetails backgroundGetRideDetails = new BackgroundGetRideDetails(this);
+//            backgroundGetRideDetails.delegate = this;
+//            backgroundGetRideDetails.execute(customerPhone, driverPhone);
+
+
+
         } catch (JSONException e) {
             Log.e(TAG, "Json Exception: " + e.getMessage());
         } catch (Exception e) {
             Log.e(TAG, "Exception: " + e.getMessage());
         }
     }
+
+//    @Override
+//    public void processStringFinish(String s) {
+//        Log.e(TAG, "HERERERERERE");
+//        Log.e(TAG, "Fetched Customer Data Successfully");
+//        Log.e(TAG, s);
+//    }
 }
