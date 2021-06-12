@@ -214,6 +214,10 @@ The permission result is invoked once the user decides whether to allow or deny 
                 {
                     logoutFrom();
                 }
+                else if(item.getTitle().equals("Rides"))
+                {
+                    showRides();
+                }
 
                 return false;
             }
@@ -232,6 +236,12 @@ The permission result is invoked once the user decides whether to allow or deny 
         getToken=new GetToken();
         getToken.getToken();
 
+    }
+
+    private void showRides()
+    {
+        Intent intent=new Intent(this,Rides.class);
+        startActivity(intent);
     }
 
     private void openProfile()
