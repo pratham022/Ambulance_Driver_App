@@ -228,7 +228,21 @@ The permission result is invoked once the user decides whether to allow or deny 
         txtDestination = findViewById(R.id.editTextDestination);
 
 
-        startFetchingToken();
+          startFetchingToken();
+
+
+        //get notification data info
+        Bundle bundle = getIntent().getExtras();
+        if (bundle != null) {
+
+            // call background worker here...
+            //bundle must contain all info sent in "data" field of the notification
+//            for (String key : bundle.keySet()) {
+//                Object value = bundle.get(key);
+//                Log.e("MainActivity....: ", "Key: " + key + " Value: " + value);
+//            }
+        }
+
 
     }
 
@@ -474,8 +488,20 @@ The permission result is invoked once the user decides whether to allow or deny 
 
     @Override
     protected void onResume() {
+        Log.d("mAINaCTIVITY", "Onresume");
         super.onResume();
         mapView.onResume();
+
+        //get notification data info
+        Bundle bundle = getIntent().getExtras();
+        if (bundle != null) {
+            // call background worker here...
+            //bundle must contain all info sent in "data" field of the notification
+//            for (String key : bundle.keySet()) {
+//                Object value = bundle.get(key);
+//                Log.e("MainActivity....: ", "Key: " + key + " Value: " + value);
+//            }
+        }
     }
 
     @Override
