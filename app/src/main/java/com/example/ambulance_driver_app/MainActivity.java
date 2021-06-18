@@ -64,6 +64,9 @@ import com.mapbox.mapboxsdk.style.sources.GeoJsonSource;
 import com.mapbox.services.android.navigation.ui.v5.route.NavigationMapRoute;
 import com.mapbox.services.android.navigation.v5.navigation.NavigationRoute;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import java.io.IOException;
 import java.util.List;
 import java.util.Locale;
@@ -83,7 +86,7 @@ import static com.mapbox.mapboxsdk.style.layers.PropertyFactory.iconImage;
 
 
 public class MainActivity extends AppCompatActivity implements
-        OnMapReadyCallback, PermissionsListener, MapboxMap.OnMapClickListener {
+        OnMapReadyCallback, PermissionsListener, MapboxMap.OnMapClickListener, ExampleBottomSheetDialog.BottomSheetListener, AsyncResponseString {
 
 
     NavigationView nav;
@@ -237,11 +240,35 @@ The permission result is invoked once the user decides whether to allow or deny 
 
             // call background worker here...
             //bundle must contain all info sent in "data" field of the notification
-//            for (String key : bundle.keySet()) {
-//                Object value = bundle.get(key);
-//                Log.e("MainActivity....: ", "Key: " + key + " Value: " + value);
-//            }
+            for (String key : bundle.keySet()) {
+                Object value = bundle.get(key);
+                Log.e("MainActivity....: ", "Key: " + key + " Value: " + value);
+            }
+
+
+            String driverPhone = "";
+            if (sh.getString("phone", null) != null) {
+                driverPhone = sh.getString("phone", null);
+            }
+
+
+            BackgroundGetRideDetailsBackground backgroundGetRideDetailsBackground = new BackgroundGetRideDetailsBackground(this);
+            backgroundGetRideDetailsBackground.delegate = this;
+            backgroundGetRideDetailsBackground.execute(driverPhone);
+
         }
+
+        ExampleBottomSheetDialog bottomSheet = new ExampleBottomSheetDialog();
+        bottomSheet.show(getSupportFragmentManager(), "exampleBottomSheet");
+
+        Button openBottomSheet = findViewById(R.id.button_open_bottom_sheet);
+        openBottomSheet.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                ExampleBottomSheetDialog bottomSheet = new ExampleBottomSheetDialog();
+                bottomSheet.show(getSupportFragmentManager(), "exampleBottomSheet");
+            }
+        });
 
 
     }
@@ -497,10 +524,22 @@ The permission result is invoked once the user decides whether to allow or deny 
         if (bundle != null) {
             // call background worker here...
             //bundle must contain all info sent in "data" field of the notification
-//            for (String key : bundle.keySet()) {
-//                Object value = bundle.get(key);
-//                Log.e("MainActivity....: ", "Key: " + key + " Value: " + value);
-//            }
+            for (String key : bundle.keySet()) {
+                Object value = bundle.get(key);
+                Log.e("MainActivity....: ", "Key: " + key + " Value: " + value);
+            }
+
+            SharedPreferences sh = getSharedPreferences("MySharedPrefDriver", MODE_PRIVATE);
+            String driverPhone = "";
+            if (sh.getString("phone", null) != null) {
+                driverPhone = sh.getString("phone", null);
+            }
+
+
+            BackgroundGetRideDetailsBackground backgroundGetRideDetailsBackground = new BackgroundGetRideDetailsBackground(this);
+            backgroundGetRideDetailsBackground.delegate = this;
+            backgroundGetRideDetailsBackground.execute(driverPhone);
+
         }
     }
 
@@ -658,6 +697,27 @@ The permission result is invoked once the user decides whether to allow or deny 
         thread.start();
     }
 
+    @Override
+    public void onButtonClicked(String text) {
+
+    }
+
+    @Override
+    public void processStringFinish(String s) {
+        try {
+            JSONObject obj = new JSONObject(s);
+            JSONObject jsonObject = obj.getJSONObject("data");
+
+            ExampleBottomSheetDialog.customerName += jsonObject.getString("name");
+            ExampleBottomSheetDialog.phone += jsonObject.get("phone");
+
+            ExampleBottomSheetDialog.srcLatLng += jsonObject.getString("src_lat") + ", " + jsonObject.getString("src_lng");
+            ExampleBottomSheetDialog.destLatLng += jsonObject.getString("dest_lat") + ", " + jsonObject.getString("dest_lng");
+
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+    }
 }
 
 class GeocoderHandler extends Handler {

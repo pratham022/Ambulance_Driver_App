@@ -10,19 +10,36 @@ import com.google.firebase.messaging.RemoteMessage;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.util.HashMap;
+
 /**
  * Created by Belal on 03/11/16.
  */
 
-public class MyFirebaseMessagingService extends FirebaseMessagingService {
+public class MyFirebaseMessagingService extends FirebaseMessagingService implements AsyncResponseString{
     private static final String TAG = "MyFirebaseMsgService";
+    String customerPhone = "";
 
     @Override
     public void onMessageReceived(RemoteMessage remoteMessage) {
         if (remoteMessage.getData().size() > 0) {
             Log.e(TAG, "Data Payload here: " + remoteMessage.getData().toString());
+            String str = remoteMessage.getData().toString();
+            String arr1[] = str.split("[,]");
+            String tempMsg = "";
+            HashMap<String, String> mp = new HashMap<String, String>();
+            for(int i=0; i<arr1.length; i++) {
+                String temp[] = arr1[i].split("[=]");
+                mp.put(temp[0], temp[1]);
+                if(temp[0].equals("{body")) {
+                    tempMsg = temp[1];
+                    break;
+                }
+            }
+
             try {
-                JSONObject json = new JSONObject(remoteMessage.getData().toString());
+                JSONObject json = new JSONObject();
+                json.put("message", tempMsg);
                 sendPushNotification(json);
             } catch (Exception e) {
                 Log.e(TAG, "Exception: " + e.getMessage());
@@ -38,40 +55,39 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
         Log.e(TAG, "Notification JSON " + json.toString());
         try {
             //getting the json data
-            JSONObject data = json.getJSONObject("data");
+//
+//            //parsing json data
+//            String title = data.getString("title");
+            String message = json.getString("message");
+//            String imageUrl = data.getString("image");
+//
+//            //creating MyNotificationManager object
+//            MyNotificationManager mNotificationManager = new MyNotificationManager(getApplicationContext());
+//
+//            //creating an intent for the notification
+//            Intent intent = new Intent(getApplicationContext(), MainActivity.class);
+//
+//            //if there is no image
+//            if(imageUrl.equals("null")){
+//                //displaying small notification
+//                mNotificationManager.showSmallNotification(title, message, intent);
+//            }else{
+//                //if there is an image
+//                //displaying a big notification
+//                mNotificationManager.showBigNotification(title, message, imageUrl, intent);
+//            }
 
-            //parsing json data
-            String title = data.getString("title");
-            String message = data.getString("message");
-            String imageUrl = data.getString("image");
 
-            //creating MyNotificationManager object
-            MyNotificationManager mNotificationManager = new MyNotificationManager(getApplicationContext());
-
-            //creating an intent for the notification
-            Intent intent = new Intent(getApplicationContext(), MainActivity.class);
-
-            //if there is no image
-            if(imageUrl.equals("null")){
-                //displaying small notification
-                mNotificationManager.showSmallNotification(title, message, intent);
-            }else{
-                //if there is an image
-                //displaying a big notification
-                mNotificationManager.showBigNotification(title, message, imageUrl, intent);
-            }
-
-
-            String customerPhone = message.substring(message.length() - 10);
+            customerPhone = message.substring(message.length() - 10);
 
             SharedPreferences sh = getSharedPreferences("MySharedPrefDriver", MODE_PRIVATE);
             String driverPhone = sh.getString("phone", null);
 
             Log.e(TAG, "Fetched phone numbers from db..." + customerPhone + " "+ driverPhone);
 
-//            BackgroundGetRideDetails backgroundGetRideDetails = new BackgroundGetRideDetails(this);
-//            backgroundGetRideDetails.delegate = this;
-//            backgroundGetRideDetails.execute(customerPhone, driverPhone);
+            BackgroundGetRideDetails backgroundGetRideDetails = new BackgroundGetRideDetails(this);
+            backgroundGetRideDetails.delegate = this;
+            backgroundGetRideDetails.execute(customerPhone, driverPhone);
 
 
 
@@ -82,10 +98,24 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
         }
     }
 
-//    @Override
-//    public void processStringFinish(String s) {
-//        Log.e(TAG, "HERERERERERE");
-//        Log.e(TAG, "Fetched Customer Data Successfully");
-//        Log.e(TAG, s);
-//    }
+    @Override
+    public void processStringFinish(String s) {
+        Log.e(TAG, "HERERERERERE");
+        Log.e(TAG, "Fetched Customer Data Successfully");
+        Log.e(TAG, s);
+        try {
+            JSONObject jsonObjectM = new JSONObject(s);
+            JSONObject jsonObject = jsonObjectM.getJSONObject("data");
+            ExampleBottomSheetDialog.customerName += jsonObject.getString("cust_name");
+            ExampleBottomSheetDialog.phone += customerPhone;
+
+            ExampleBottomSheetDialog.srcLatLng += jsonObject.getString("src_lat") + ", " + jsonObject.getString("src_lng");
+            ExampleBottomSheetDialog.destLatLng += jsonObject.getString("dest_lat") + ", " + jsonObject.getString("dest_lng");
+
+            ExampleBottomSheetDialog.updateDetails();
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+
+    }
 }

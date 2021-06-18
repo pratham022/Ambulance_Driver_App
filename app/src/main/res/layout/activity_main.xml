@@ -59,6 +59,16 @@
                 android:textColor="@color/black"
                 android:layout_marginBottom="380dp"/>
 
+            <Button
+                android:id="@+id/button_open_bottom_sheet"
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                android:text="Show Details"
+                android:layout_marginTop="400dp"/>
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 
