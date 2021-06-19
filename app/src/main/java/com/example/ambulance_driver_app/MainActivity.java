@@ -707,12 +707,26 @@ The permission result is invoked once the user decides whether to allow or deny 
         try {
             JSONObject obj = new JSONObject(s);
             JSONObject jsonObject = obj.getJSONObject("data");
+            if(ExampleBottomSheetDialog.customerName.equals("Customer Name: "))
+            {
 
-            ExampleBottomSheetDialog.customerName += jsonObject.getString("name");
-            ExampleBottomSheetDialog.phone += jsonObject.get("phone");
+                ExampleBottomSheetDialog.customerName += jsonObject.getString("name");
+                ExampleBottomSheetDialog.phone += jsonObject.get("phone");
 
-            ExampleBottomSheetDialog.srcLatLng += jsonObject.getString("src_lat") + ", " + jsonObject.getString("src_lng");
-            ExampleBottomSheetDialog.destLatLng += jsonObject.getString("dest_lat") + ", " + jsonObject.getString("dest_lng");
+                ExampleBottomSheetDialog.srcLatLng += jsonObject.getString("src_lat") + ", " + jsonObject.getString("src_lng");
+                ExampleBottomSheetDialog.destLatLng += jsonObject.getString("dest_lat") + ", " + jsonObject.getString("dest_lng");
+
+            }
+            else
+            {
+                ExampleBottomSheetDialog.customerName = jsonObject.getString("name");
+                ExampleBottomSheetDialog.phone = jsonObject.getString("phone");
+
+                ExampleBottomSheetDialog.srcLatLng = jsonObject.getString("src_lat") + ", " + jsonObject.getString("src_lng");
+                ExampleBottomSheetDialog.destLatLng = jsonObject.getString("dest_lat") + ", " + jsonObject.getString("dest_lng");
+            }
+
+
 
         } catch (JSONException e) {
             e.printStackTrace();

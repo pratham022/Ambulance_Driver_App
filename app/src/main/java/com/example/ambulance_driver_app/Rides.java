@@ -65,7 +65,7 @@ public class Rides extends AppCompatActivity implements AsyncResponseString{
     public void processStringFinish(String s) {
 
         try {
-            Ride temp=new Ride();
+
             JSONObject response = new JSONObject(s);
             if (response.getString("status").equals("1")) {
                 JSONArray jsonArray =  response.getJSONArray("data");
@@ -74,18 +74,21 @@ public class Rides extends AppCompatActivity implements AsyncResponseString{
                 for(int i=0;i<jsonArray.length();i++)
                 {
                     JSONObject jsonObject=jsonArray.getJSONObject(i);
+                    Ride temp=new Ride();
                     temp.price=jsonObject.getString("price");
                     temp.time=jsonObject.getString("start_time");
                     double lati = Double.parseDouble(jsonObject.getString("src_lat"));
                     double lngi = Double.parseDouble(jsonObject.getString("src_long"));
                     LatLng src_lat_lng=new LatLng(lati,lngi);
-                    getAddressFromLocation(src_lat_lng,Rides.this,new com.example.ambulance_driver_app.GeocoderHandler());
+                   getAddressFromLocation(src_lat_lng,Rides.this,new com.example.ambulance_driver_app.GeocoderHandler());
                     temp.source=result;
+                    //Log.e("source",temp.source);
                     lati=Double.parseDouble(jsonObject.getString("dest_lat"));
                     lngi=Double.parseDouble(jsonObject.getString("dest_long"));
                     LatLng dest_lat_lng=new LatLng(lati,lngi);
-                    getAddressFromLocation(dest_lat_lng,Rides.this,new com.example.ambulance_driver_app.GeocoderHandler());
+                   getAddressFromLocation(dest_lat_lng,Rides.this,new com.example.ambulance_driver_app.GeocoderHandler());
                     temp.destination=result;
+                  //  Log.e("destination",temp.destination);
                     rideList.add(temp);
                 }
 
