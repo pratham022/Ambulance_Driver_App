@@ -30,7 +30,7 @@ public class LoginActivity extends AppCompatActivity implements AsyncResponseStr
 
         if(sh.getString("phone", null) != null){
             Log.d(TAG, "Phone no found");
-            System.out.println("Phone no found");
+           // System.out.println("Phone no found");
             Intent i = new Intent(this, MainActivity.class);
             startActivity(i);
         } else {
@@ -98,7 +98,7 @@ public class LoginActivity extends AppCompatActivity implements AsyncResponseStr
                 myEdit.putString("driver_id",driver_id);
                 myEdit.putString("password", password);
                 myEdit.apply();
-
+              //  Log.e("phone in login",phone);
                 Intent i = new Intent(this, MainActivity.class);
                 startActivity(i);
             } else {
