@@ -2,6 +2,7 @@ package com.example.ambulance_driver_app;
 
 
 import android.annotation.SuppressLint;
+import android.app.TaskStackBuilder;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -127,7 +128,7 @@ public class MainActivity extends AppCompatActivity implements
 
     private String rideId = "";
     private String cabId = "";
-    GetToken getToken;
+
 
 
 
@@ -231,7 +232,7 @@ The permission result is invoked once the user decides whether to allow or deny 
         txtDestination = findViewById(R.id.editTextDestination);
 
 
-          startFetchingToken();
+
 
 
         //get notification data info
@@ -273,11 +274,7 @@ The permission result is invoked once the user decides whether to allow or deny 
 
     }
 
-    private void startFetchingToken(){
-        getToken=new GetToken();
-        getToken.getToken();
 
-    }
 
     private void showRides()
     {
@@ -307,6 +304,7 @@ The permission result is invoked once the user decides whether to allow or deny 
         editor.remove("driver_id");
         Intent intent=new Intent(this,LoginActivity.class);
         startActivity(intent);
+        TaskStackBuilder.create(this).addNextIntentWithParentStack(intent).startActivities();
         editor.commit();
     }
 

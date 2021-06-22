@@ -21,6 +21,7 @@ public class LoginActivity extends AppCompatActivity implements AsyncResponseStr
     private  String  phone="", pass="";
     private String TAG = "LoginActivity";
 
+    GetToken getToken;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -33,6 +34,7 @@ public class LoginActivity extends AppCompatActivity implements AsyncResponseStr
            // System.out.println("Phone no found");
             Intent i = new Intent(this, MainActivity.class);
             startActivity(i);
+            finish();
         } else {
             Log.d(TAG, "Not found!!!!!!");
             System.out.println("Not found!!!!!!");
@@ -101,12 +103,20 @@ public class LoginActivity extends AppCompatActivity implements AsyncResponseStr
               //  Log.e("phone in login",phone);
                 Intent i = new Intent(this, MainActivity.class);
                 startActivity(i);
+                startFetchingToken();
+                finish();
             } else {
                 Toast.makeText(getApplicationContext(), response.getString("data"), Toast.LENGTH_LONG).show();
             }
         } catch (JSONException e) {
             e.printStackTrace();
         }
+
+    }
+
+    private void startFetchingToken(){
+        getToken=new GetToken();
+        getToken.getToken();
 
     }
 }

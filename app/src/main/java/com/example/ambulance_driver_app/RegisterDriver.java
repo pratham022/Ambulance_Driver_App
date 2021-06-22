@@ -58,6 +58,7 @@ public class RegisterDriver extends AppCompatActivity implements AsyncResponseSt
             if (response.getString("status").equals("1")) {
                 Intent i = new Intent(this, LoginActivity.class);
                 startActivity(i);
+                finish();
             } else {
                 Toast.makeText(getApplicationContext(), response.getString("data"), Toast.LENGTH_LONG).show();
             }
