@@ -35,10 +35,10 @@ public class MyFirebaseInstanceIDService extends FirebaseInstanceIdService {
 
     private void storeToken(String token) {
         //we will save the token in sharedpreferences later
-        Context cxt=MainActivity.cxt;
-           SharedPreferences sh= cxt.getSharedPreferences("MySharedPrefDriver", MODE_PRIVATE);
+        Context cxt=LoginActivity.cxt;
+        SharedPreferences sh= cxt.getSharedPreferences("MySharedPrefDriver", MODE_PRIVATE);
         SharedPreferences.Editor myEdit = sh.edit();
         myEdit.putString("token",token);
-        myEdit.commit();
+        myEdit.apply();
     }
 }

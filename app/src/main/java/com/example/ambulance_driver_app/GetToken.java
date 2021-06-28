@@ -32,7 +32,7 @@ public class GetToken extends AppCompatActivity implements AsyncResponseString,R
         myFirebaseInstanceIDService=new MyFirebaseInstanceIDService();
         myFirebaseInstanceIDService.onTokenRefresh();
         String phone="",token="";
-        Context cxt=MainActivity.cxt;
+        Context cxt=LoginActivity.cxt;
         sh= cxt.getSharedPreferences("MySharedPrefDriver", MODE_PRIVATE);
         if (sh.getString("phone", null) != null) {
             phone=sh.getString("phone", null);

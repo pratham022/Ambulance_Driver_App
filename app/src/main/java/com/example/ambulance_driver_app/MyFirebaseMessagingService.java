@@ -106,11 +106,25 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService impleme
         try {
             JSONObject jsonObjectM = new JSONObject(s);
             JSONObject jsonObject = jsonObjectM.getJSONObject("data");
+
+            MainActivity.custRideId = jsonObject.getString("id");
+
             ExampleBottomSheetDialog.customerName += jsonObject.getString("cust_name");
+            MainActivity.custName = jsonObject.getString("name");
+
             ExampleBottomSheetDialog.phone += customerPhone;
+            MainActivity.custPhone = customerPhone;
 
             ExampleBottomSheetDialog.srcLatLng += jsonObject.getString("src_lat") + ", " + jsonObject.getString("src_lng");
             ExampleBottomSheetDialog.destLatLng += jsonObject.getString("dest_lat") + ", " + jsonObject.getString("dest_lng");
+
+            SharedPreferences sh = getSharedPreferences("MySharedPrefDriver", MODE_PRIVATE);
+            SharedPreferences.Editor myEdit = sh.edit();
+            myEdit.putString("ride_id", jsonObject.getString("id"));
+            myEdit.putString("ride_cust_name", jsonObject.getString("name"));
+            myEdit.putString("ride_cust_phone", customerPhone);
+            myEdit.apply();
+
 
             ExampleBottomSheetDialog.updateDetails();
         } catch (JSONException e) {

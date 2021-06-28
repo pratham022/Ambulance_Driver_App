@@ -1,6 +1,9 @@
 package com.example.ambulance_driver_app;
 
 import android.content.Context;
+import android.content.Intent;
+import android.content.SharedPreferences;
+import android.net.Uri;
 import android.os.Bundle;
 import androidx.annotation.Nullable;
 
@@ -13,11 +16,12 @@ import android.widget.TextView;
 
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment;
 
+
 public class ExampleBottomSheetDialog extends BottomSheetDialogFragment {
 
     private BottomSheetListener mListener;
-    static String customerName = "Customer Name: ";
-    static String phone = "Phone No. ";
+    static String customerName = "Customer Name: "+MainActivity.custName;
+    static String phone = "Phone No. " + MainActivity.custPhone;
     static String srcLatLng = "Source: ";
     static String destLatLng = "Dest: ";
 
@@ -47,6 +51,19 @@ public class ExampleBottomSheetDialog extends BottomSheetDialogFragment {
             @Override
             public void onClick(View v) {
                 mListener.onButtonClicked("Button 1 clicked");
+                String custPhone = MainActivity.custPhone;
+                if(custPhone.equals("")) {
+                    // should not call customer
+                    Log.e("Here", "Should not call customer");
+                }
+                else {
+                    // call the customer
+                    Log.e("Here", "call the customer");
+                    Intent callIntent = new Intent(Intent.ACTION_DIAL);
+//                    callIntent.setData(Uri.parse("tel:"+custPhone));
+                    callIntent.setData(Uri.parse("tel:7030584432"));
+                    startActivity(callIntent);
+                }
                 dismiss();
             }
         });

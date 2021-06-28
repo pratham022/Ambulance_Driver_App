@@ -2,6 +2,7 @@ package com.example.ambulance_driver_app;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
@@ -20,6 +21,7 @@ public class LoginActivity extends AppCompatActivity implements AsyncResponseStr
     private Button btnLogin;
     private  String  phone="", pass="";
     private String TAG = "LoginActivity";
+    public static Context cxt;
 
     GetToken getToken;
     @Override
@@ -27,6 +29,7 @@ public class LoginActivity extends AppCompatActivity implements AsyncResponseStr
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
 
+        cxt = getApplicationContext();
         SharedPreferences sh = getSharedPreferences("MySharedPrefDriver", MODE_PRIVATE);
 
         if(sh.getString("phone", null) != null){
@@ -100,10 +103,11 @@ public class LoginActivity extends AppCompatActivity implements AsyncResponseStr
                 myEdit.putString("driver_id",driver_id);
                 myEdit.putString("password", password);
                 myEdit.apply();
+                startFetchingToken();
+
               //  Log.e("phone in login",phone);
                 Intent i = new Intent(this, MainActivity.class);
                 startActivity(i);
-                startFetchingToken();
                 finish();
             } else {
                 Toast.makeText(getApplicationContext(), response.getString("data"), Toast.LENGTH_LONG).show();

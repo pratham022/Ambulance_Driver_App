@@ -130,6 +130,9 @@ public class MainActivity extends AppCompatActivity implements
     private String cabId = "";
 
 
+    public static String custPhone = "";
+    public static String custName = "";
+    public static String custRideId = "";
 
 
 
@@ -197,6 +200,9 @@ The permission result is invoked once the user decides whether to allow or deny 
         cxt=getApplicationContext();
 
 
+        custName = sh.getString("ride_cust_name", "");
+        custRideId = sh.getString("ride_id", "");
+        custPhone = sh.getString("ride_cust_phone", "");
 
 
 
@@ -272,6 +278,8 @@ The permission result is invoked once the user decides whether to allow or deny 
         });
 
 
+
+
     }
 
 
@@ -302,6 +310,9 @@ The permission result is invoked once the user decides whether to allow or deny 
         editor.remove("name");
         editor.remove("phone");
         editor.remove("driver_id");
+        editor.remove("ride_cust_name");
+        editor.remove("ride_id");
+        editor.remove("ride_cust_phone");
         Intent intent=new Intent(this,LoginActivity.class);
         startActivity(intent);
         TaskStackBuilder.create(this).addNextIntentWithParentStack(intent).startActivities();
@@ -708,8 +719,13 @@ The permission result is invoked once the user decides whether to allow or deny 
             if(ExampleBottomSheetDialog.customerName.equals("Customer Name: "))
             {
 
+                custRideId = jsonObject.getString("id");
+
                 ExampleBottomSheetDialog.customerName += jsonObject.getString("name");
-                ExampleBottomSheetDialog.phone += jsonObject.get("phone");
+                custName = jsonObject.getString("name");
+
+                ExampleBottomSheetDialog.phone += jsonObject.getString("phone");
+                custPhone = jsonObject.getString("phone");
 
                 ExampleBottomSheetDialog.srcLatLng += jsonObject.getString("src_lat") + ", " + jsonObject.getString("src_lng");
                 ExampleBottomSheetDialog.destLatLng += jsonObject.getString("dest_lat") + ", " + jsonObject.getString("dest_lng");
@@ -717,13 +733,24 @@ The permission result is invoked once the user decides whether to allow or deny 
             }
             else
             {
+                custRideId = jsonObject.getString("id");
+
                 ExampleBottomSheetDialog.customerName = jsonObject.getString("name");
+                custName = jsonObject.getString("name");
+
                 ExampleBottomSheetDialog.phone = jsonObject.getString("phone");
+                custPhone = jsonObject.getString("phone");
 
                 ExampleBottomSheetDialog.srcLatLng = jsonObject.getString("src_lat") + ", " + jsonObject.getString("src_lng");
                 ExampleBottomSheetDialog.destLatLng = jsonObject.getString("dest_lat") + ", " + jsonObject.getString("dest_lng");
             }
 
+            SharedPreferences sh = getSharedPreferences("MySharedPrefDriver", MODE_PRIVATE);
+            SharedPreferences.Editor myEdit = sh.edit();
+            myEdit.putString("ride_id", jsonObject.getString("id"));
+            myEdit.putString("ride_cust_name", jsonObject.getString("name"));
+            myEdit.putString("ride_cust_phone", custPhone);
+            myEdit.apply();
 
 
         } catch (JSONException e) {
