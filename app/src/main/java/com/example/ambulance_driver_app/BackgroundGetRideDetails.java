@@ -31,7 +31,7 @@ public class BackgroundGetRideDetails extends AsyncTask<String, Void, String>{
 
         String customerPhone = strings[0];
         String driverPhone = strings[1];
-        String login_url = "https://quickcare.000webhostapp.com/getCustomerRideDetails.php";
+        String login_url = context.getResources().getString(R.string.server_url)+"/getCustomerRideDetails.php";
         try {
             URL url = new URL(login_url);
             HttpURLConnection httpURLConnection = (HttpURLConnection) url.openConnection();

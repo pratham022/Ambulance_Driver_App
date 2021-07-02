@@ -24,7 +24,7 @@ public class BackgroundProfileWorker extends AsyncTask<String, Void, String> {
     @Override
     protected String doInBackground(String... strings) {
         String phone = strings[0];
-        String getDetailsUrl = "https://quickcare.000webhostapp.com/driverInfo.php/?phone=" + phone;
+        String getDetailsUrl = context.getResources().getString(R.string.server_url)+"/driverInfo.php/?phone=" + phone;
         String inputLine = "", result = "";
         try {
             URL url = new URL(getDetailsUrl);

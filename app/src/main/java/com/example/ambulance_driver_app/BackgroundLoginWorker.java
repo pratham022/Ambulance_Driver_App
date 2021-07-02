@@ -32,7 +32,7 @@ public class BackgroundLoginWorker extends AsyncTask<String, Void, String> {
 
         String phone = strings[0];
         String pass = strings[1];
-        String login_url = "https://quickcare.000webhostapp.com/login.php/";
+        String login_url = context.getResources().getString(R.string.server_url)+"/login.php/";
         try {
             URL url = new URL(login_url);
             HttpURLConnection httpURLConnection = (HttpURLConnection) url.openConnection();
