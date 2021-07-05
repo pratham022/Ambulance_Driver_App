@@ -44,7 +44,7 @@ public class GetToken extends AppCompatActivity implements AsyncResponseString,R
 
         Log.e("token",sh.getString("token",null));
 
-        BackgroundSaveToken backgroundSaveToken=new BackgroundSaveToken(this);
+        BackgroundSaveToken backgroundSaveToken=new BackgroundSaveToken(LoginActivity.cxt);
         backgroundSaveToken.delegate=this;
         backgroundSaveToken.execute(phone,token);
     }

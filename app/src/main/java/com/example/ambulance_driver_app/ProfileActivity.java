@@ -14,7 +14,7 @@ import android.widget.Toast;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-public class ProfileActivity extends AppCompatActivity implements AsyncResponseString, AsyncResponseAddressEmail {
+public class ProfileActivity extends AppCompatActivity implements AsyncResponseString,AsyncResponseAddressEmail {
 
     String name,password1,email,address;
 
@@ -58,14 +58,22 @@ public class ProfileActivity extends AppCompatActivity implements AsyncResponseS
         try {
             JSONObject response = new JSONObject(s);
             if (response.getString("status").equals("1")) {
-
+                Log.e("Profile activity","editing done");
                 SharedPreferences sh = getSharedPreferences("MySharedPrefDriver", MODE_PRIVATE);
                 SharedPreferences.Editor myEdit = sh.edit();
+                EditText nametxt = (EditText) findViewById(R.id.txtName);
+                name=nametxt.getText().toString();
+                EditText editText = (EditText) findViewById(R.id.txtPassword);
+                password1=editText.getText().toString();
+                EditText addTxt=(EditText)findViewById(R.id.txtAddress);
+                address=addTxt.getText().toString();
+                EditText emailtxt=(EditText)findViewById(R.id.txtEmail);
+                email=emailtxt.getText().toString();
                 myEdit.putString("name",name);
                 myEdit.putString("password",password1);
                 myEdit.putString("address",address);
                 myEdit.putString("email",email);
-
+                myEdit.apply();
 
                 Intent i = new Intent(this, MainActivity.class);
                 startActivity(i);

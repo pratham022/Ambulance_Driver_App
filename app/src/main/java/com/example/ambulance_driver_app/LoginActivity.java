@@ -33,7 +33,7 @@ public class LoginActivity extends AppCompatActivity implements AsyncResponseStr
         SharedPreferences sh = getSharedPreferences("MySharedPrefDriver", MODE_PRIVATE);
 
         if(sh.getString("phone", null) != null){
-            Log.d(TAG, "Phone no found");
+            Log.d(TAG, "Phone  found");
            // System.out.println("Phone no found");
             Intent i = new Intent(this, MainActivity.class);
             startActivity(i);
@@ -90,6 +90,7 @@ public class LoginActivity extends AppCompatActivity implements AsyncResponseStr
         try {
             JSONObject response = new JSONObject(s);
             if (response.getString("status").equals("1")) {
+                Log.e("IN processfinish","got data");
                 JSONObject jsonObject =  response.getJSONObject("data");
                 String phone=jsonObject.getString("phone");
                 String name=jsonObject.getString("first_name")+" "+jsonObject.getString("last_name");
@@ -119,6 +120,7 @@ public class LoginActivity extends AppCompatActivity implements AsyncResponseStr
     }
 
     private void startFetchingToken(){
+        Log.e("startFetchingToken","create object of get token");
         getToken=new GetToken();
         getToken.getToken();
 
