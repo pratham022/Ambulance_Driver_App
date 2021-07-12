@@ -80,6 +80,9 @@ import static com.mapbox.mapboxsdk.style.layers.PropertyFactory.iconAllowOverlap
 import static com.mapbox.mapboxsdk.style.layers.PropertyFactory.iconIgnorePlacement;
 import static com.mapbox.mapboxsdk.style.layers.PropertyFactory.iconImage;
 
+import com.mapbox.geojson.FeatureCollection;
+import java.util.ArrayList;
+
 
 
 // Classes needed to add the location engine
@@ -87,7 +90,7 @@ import static com.mapbox.mapboxsdk.style.layers.PropertyFactory.iconImage;
 
 
 public class MainActivity extends AppCompatActivity implements
-        OnMapReadyCallback, PermissionsListener, MapboxMap.OnMapClickListener, ExampleBottomSheetDialog.BottomSheetListener, AsyncResponseString {
+        OnMapReadyCallback, PermissionsListener, ExampleBottomSheetDialog.BottomSheetListener, AsyncResponseString {
 
 
     NavigationView nav;
@@ -123,7 +126,6 @@ public class MainActivity extends AppCompatActivity implements
     public static EditText txtDestination;
     public static  Context cxt;
     public Location source;
-    public Point source_pt,destination_pt;
     Marker destination_mk=null;
 
     private String rideId = "";
@@ -134,6 +136,12 @@ public class MainActivity extends AppCompatActivity implements
     public static String custName = "";
     public static String custRideId = "";
 
+    public static List<Feature> symbolLayerIconFeatureList = new ArrayList<>();
+    public static Point driver_pt, destination_pt, customer_pt;
+
+    public static final String SOURCE_ID = "SOURCE_ID";
+    public static final String ICON_ID = "ICON_ID";
+    public static final String LAYER_ID = "LAYER_ID";
 
 
     /**
@@ -348,18 +356,6 @@ The permission result is invoked once the user decides whether to allow or deny 
 
                         enableLocationComponent(style); ///if permission given set location
                         addDestinationIconSymbolLayer(style); // give style to marker
-                        // addSourceIconSymbolLayer(style);
-
-//                        LatLng pt=new LatLng(source.getLatitude(),source.getLongitude());
-//
-//                        getAddressFromLocation(pt,MainActivity.this,new GeocoderHandler());//reverse geocoding
-
-
-
-
-
-                        mapboxMap.addOnMapClickListener(MainActivity.this);
-
                     }
                 });
     }
@@ -595,84 +591,6 @@ The permission result is invoked once the user decides whether to allow or deny 
         mapView.onDestroy();
     }
 
-    void getSource()  {
-
-        try{
-            String source=txtSource.getText().toString();
-
-            List<Address> foundGeocode = null;
-            /* find the addresses  by using getFromLocationName() method with the given address*/
-            foundGeocode = new Geocoder(this).getFromLocationName(source, 1);
-            foundGeocode.get(0).getLatitude(); //getting latitude
-            foundGeocode.get(0).getLongitude();//getting longitude
-        }catch(IOException e)
-        {
-            Log.d("MainActivity","got in error fetching source");
-        }
-    }
-
-    void getDestination(){
-
-        try{
-            String destination=txtDestination.getText().toString();
-
-            List<Address> foundGeocode = null;
-            /* find the addresses  by using getFromLocationName() method with the given address*/
-            foundGeocode = new Geocoder(this).getFromLocationName(destination, 1);
-            foundGeocode.get(0).getLatitude(); //getting latitude
-            foundGeocode.get(0).getLongitude();//getting longitude
-            destination_pt=Point.fromLngLat(foundGeocode.get(0).getLongitude(),foundGeocode.get(0).getLatitude());
-            Log.e("Destination location is",String.valueOf(foundGeocode.get(0).getLatitude())+" "+String.valueOf(foundGeocode.get(0).getLongitude()));
-            if(destination_mk==null)
-            {
-                destination_mk=mapboxMap.addMarker(new MarkerOptions()
-                        .position(new LatLng(foundGeocode.get(0).getLatitude(), foundGeocode.get(0).getLongitude()))
-                        .title("hospital"));
-            }else
-            {
-                destination_mk.setPosition(new LatLng(foundGeocode.get(0).getLatitude(), foundGeocode.get(0).getLongitude()));
-            }
-            getRoute(source_pt,destination_pt);
-
-        }catch (IOException e)
-        {
-            Log.d("MainActivity","got in error fetching destination");
-        }
-
-
-    }
-
-
-
-
-
-
-    @Override
-    public boolean onMapClick(@NonNull LatLng point) {
-
-        getAddressFromLocation(point,MainActivity.this,new GeocoderHandler());
-
-
-
-        //
-        Point destinationPoint = Point.fromLngLat(point.getLongitude(), point.getLatitude());
-        Point originPoint = Point.fromLngLat(locationComponent.getLastKnownLocation().getLongitude(),
-                locationComponent.getLastKnownLocation().getLatitude());
-
-        source_pt=destinationPoint;
-
-        GeoJsonSource source = mapboxMap.getStyle().getSourceAs("destination-source-id");
-        if (source != null) {
-            source.setGeoJson(Feature.fromGeometry(destinationPoint));
-        }
-
-
-
-        getRoute(originPoint, destinationPoint);
-        return true;
-    }
-
-
 
     public static void getAddressFromLocation(LatLng point, final Context context, final Handler handler) {
         Thread thread = new Thread() {
@@ -750,6 +668,12 @@ The permission result is invoked once the user decides whether to allow or deny 
             myEdit.putString("ride_id", jsonObject.getString("id"));
             myEdit.putString("ride_cust_name", jsonObject.getString("name"));
             myEdit.putString("ride_cust_phone", custPhone);
+
+            myEdit.putString("src_lat", jsonObject.getString("src_lat"));
+            myEdit.putString("src_lng", jsonObject.getString("src_lng"));
+            myEdit.putString("dest_lat", jsonObject.getString("dest_lat"));
+            myEdit.putString("dest_lng", jsonObject.getString("dest_lng"));
+
             myEdit.apply();
 
 

@@ -1,5 +1,6 @@
 package com.example.ambulance_driver_app;
 
+import android.content.SharedPreferences;
 import android.location.Location;
 import android.util.Log;
 import android.widget.Toast;
@@ -14,6 +15,7 @@ import com.mapbox.api.geocoding.v5.MapboxGeocoding;
 import com.mapbox.api.geocoding.v5.models.CarmenFeature;
 import com.mapbox.api.geocoding.v5.models.GeocodingResponse;
 import com.mapbox.core.exceptions.ServicesException;
+import com.mapbox.geojson.Feature;
 import com.mapbox.geojson.Point;
 import com.mapbox.mapboxsdk.geometry.LatLng;
 
@@ -24,6 +26,10 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 import timber.log.Timber;
+
+
+
+import static android.content.Context.MODE_PRIVATE;
 
 
 public class MainActivityLocationCallback implements LocationEngineCallback<LocationEngineResult> {
@@ -64,7 +70,36 @@ public class MainActivityLocationCallback implements LocationEngineCallback<Loca
 
             LatLng pt=new LatLng(activity.source.getLatitude(),activity.source.getLongitude());
 
-            // activity.getAddressFromLocation(pt,activity,new GeocoderHandler());
+
+            // Now, put this point in features list
+            MainActivity.symbolLayerIconFeatureList.add(0, Feature.fromGeometry(
+                                                            Point.fromLngLat(activity.source.getLongitude(), activity.source.getLatitude())));
+
+
+            // try to get co-ordinates of CUSTOMER if the ride is booked
+
+
+            SharedPreferences sh = activity.getSharedPreferences("MySharedPrefDriver", MODE_PRIVATE);
+            if (sh.contains("src_lat")) {
+                // ride is booked!....get customer location
+                String src_lat = sh.getString("src_lat", "");
+                String src_lng = sh.getString("src_lng", "");
+                String dest_lat = sh.getString("dest_lat", "");
+                String dest_lng = sh.getString("dest_lng", "");
+
+
+                MainActivity.symbolLayerIconFeatureList.add(1, Feature.fromGeometry(
+                        Point.fromLngLat(Double.parseDouble(src_lng), Double.parseDouble(src_lat))));
+
+                MainActivity.symbolLayerIconFeatureList.add(2, Feature.fromGeometry(
+                        Point.fromLngLat(Double.parseDouble(dest_lng), Double.parseDouble(dest_lat))));
+
+
+
+            }
+            else {
+                // no rides currently booked
+            }
 
 
             if (location == null) {
