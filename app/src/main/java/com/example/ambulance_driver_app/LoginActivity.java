@@ -88,6 +88,7 @@ public class LoginActivity extends AppCompatActivity implements AsyncResponseStr
     @Override
     public void processStringFinish(String s) {
         try {
+            Log.e("in backgroundlogin","4");
             JSONObject response = new JSONObject(s);
             if (response.getString("status").equals("1")) {
                 Log.e("IN processfinish","got data");

@@ -66,40 +66,34 @@ public class MainActivityLocationCallback implements LocationEngineCallback<Loca
 
             activity.source=location;
 
+            activity.driver_pt=Point.fromLngLat(location.getLongitude(),location.getLatitude());
+
             Log.e("Hi Prathu",String.valueOf(activity.source.getLatitude())+" "+String.valueOf(activity.source.getLongitude()));
 
             LatLng pt=new LatLng(activity.source.getLatitude(),activity.source.getLongitude());
 
 
-            // Now, put this point in features list
-            MainActivity.symbolLayerIconFeatureList.add(0, Feature.fromGeometry(
-                                                            Point.fromLngLat(activity.source.getLongitude(), activity.source.getLatitude())));
+            if(activity.customer_pt!=null)
+            {
+                double inKms=distance(activity.driver_pt.latitude(),activity.customer_pt.latitude(),activity.driver_pt.longitude(),activity.customer_pt.longitude());
+
+                double inMtrs=inKms*1000;
+
+                Log.e("Distance in mtr",String.valueOf(inMtrs));
+
+                if(inMtrs<=500)
+                {
+                    Log.e("In 500 mtrs","remove driver pt");
+                    MainActivity.symbolLayerIconFeatureList.remove(0);
+                }
+                activity.arrageMarkers();
+            }
 
 
             // try to get co-ordinates of CUSTOMER if the ride is booked
 
 
-            SharedPreferences sh = activity.getSharedPreferences("MySharedPrefDriver", MODE_PRIVATE);
-            if (sh.contains("src_lat")) {
-                // ride is booked!....get customer location
-                String src_lat = sh.getString("src_lat", "");
-                String src_lng = sh.getString("src_lng", "");
-                String dest_lat = sh.getString("dest_lat", "");
-                String dest_lng = sh.getString("dest_lng", "");
 
-
-                MainActivity.symbolLayerIconFeatureList.add(1, Feature.fromGeometry(
-                        Point.fromLngLat(Double.parseDouble(src_lng), Double.parseDouble(src_lat))));
-
-                MainActivity.symbolLayerIconFeatureList.add(2, Feature.fromGeometry(
-                        Point.fromLngLat(Double.parseDouble(dest_lng), Double.parseDouble(dest_lat))));
-
-
-
-            }
-            else {
-                // no rides currently booked
-            }
 
 
             if (location == null) {
@@ -131,5 +125,35 @@ public class MainActivityLocationCallback implements LocationEngineCallback<Loca
             Toast.makeText(activity, exception.getLocalizedMessage(),
                     Toast.LENGTH_SHORT).show();
         }
+    }
+
+    public static double distance(double lat1,
+                                  double lat2, double lon1,
+                                  double lon2)
+    {
+
+        // The math module contains a function
+        // named toRadians which converts from
+        // degrees to radians.
+        lon1 = Math.toRadians(lon1);
+        lon2 = Math.toRadians(lon2);
+        lat1 = Math.toRadians(lat1);
+        lat2 = Math.toRadians(lat2);
+
+        // Haversine formula
+        double dlon = lon2 - lon1;
+        double dlat = lat2 - lat1;
+        double a = Math.pow(Math.sin(dlat / 2), 2)
+                + Math.cos(lat1) * Math.cos(lat2)
+                * Math.pow(Math.sin(dlon / 2),2);
+
+        double c = 2 * Math.asin(Math.sqrt(a));
+
+        // Radius of earth in kilometers. Use 3956
+        // for miles
+        double r = 6371;
+
+        // calculate the result
+        return(c * r);
     }
 }

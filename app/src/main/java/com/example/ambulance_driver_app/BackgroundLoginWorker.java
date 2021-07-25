@@ -41,7 +41,7 @@ public class BackgroundLoginWorker extends AsyncTask<String, Void, String> {
             httpURLConnection.setDoInput(true);
             OutputStream outputStream = httpURLConnection.getOutputStream();
             BufferedWriter bufferedWriter = new BufferedWriter(new OutputStreamWriter(outputStream, "UTF-8"));
-
+                Log.e("in backgroundlogin","1");
             String post_data = URLEncoder.encode("phone", "UTF-8")+"="+URLEncoder.encode(phone, "UTF-8")
                     + "&&" +URLEncoder.encode("pass", "UTF-8")+"="+URLEncoder.encode(pass, "UTF-8")
                     + "&&" +URLEncoder.encode("type", "UTF-8")+"="+URLEncoder.encode("driver", "UTF-8");
@@ -49,7 +49,7 @@ public class BackgroundLoginWorker extends AsyncTask<String, Void, String> {
             bufferedWriter.flush();
             bufferedWriter.close();
             outputStream.close();
-
+            Log.e("in backgroundlogin","2");
             InputStream inputStream = httpURLConnection.getInputStream();
             BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(inputStream, "iso-8859-1"));
             String result = "";
@@ -74,6 +74,7 @@ public class BackgroundLoginWorker extends AsyncTask<String, Void, String> {
     @Override
     protected void onPostExecute(String s) {
         super.onPostExecute(s);
+        Log.e("in backgroundlogin","3");
         delegate.processStringFinish(s);
     }
 

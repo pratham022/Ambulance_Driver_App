@@ -137,11 +137,13 @@ public class MainActivity extends AppCompatActivity implements
     public static String custRideId = "";
 
     public static List<Feature> symbolLayerIconFeatureList = new ArrayList<>();
-    public static Point driver_pt, destination_pt, customer_pt;
+    public static Point driver_pt=null, destination_pt=null, customer_pt=null;
 
     public static final String SOURCE_ID = "SOURCE_ID";
     public static final String ICON_ID = "ICON_ID";
     public static final String LAYER_ID = "LAYER_ID";
+
+
 
 
     /**
@@ -208,9 +210,7 @@ The permission result is invoked once the user decides whether to allow or deny 
         cxt=getApplicationContext();
 
 
-        custName = sh.getString("ride_cust_name", "");
-        custRideId = sh.getString("ride_id", "");
-        custPhone = sh.getString("ride_cust_phone", "");
+
 
 
 
@@ -240,15 +240,6 @@ The permission result is invoked once the user decides whether to allow or deny 
                 return false;
             }
         });
-
-
-        txtSource = findViewById(R.id.editTextSource);
-        txtDestination = findViewById(R.id.editTextDestination);
-
-
-
-
-
         //get notification data info
         Bundle bundle = getIntent().getExtras();
         if (bundle != null) {
@@ -527,6 +518,7 @@ The permission result is invoked once the user decides whether to allow or deny 
         //get notification data info
         Bundle bundle = getIntent().getExtras();
         if (bundle != null) {
+
             // call background worker here...
             //bundle must contain all info sent in "data" field of the notification
             for (String key : bundle.keySet()) {
@@ -676,12 +668,130 @@ The permission result is invoked once the user decides whether to allow or deny 
 
             myEdit.apply();
 
+            double src_lat=Double.valueOf(jsonObject.getString("src_lat"));
+            double src_lng=Double.valueOf(jsonObject.getString("src_lng"));
+            double dest_lat=Double.valueOf(jsonObject.getString("dest_lat"));
+            double dest_lng=Double.valueOf(jsonObject.getString("dest_lng"));
+
+            customer_pt=Point.fromLngLat(src_lng,src_lat);
+            destination_pt=Point.fromLngLat(dest_lng,dest_lat);
+
+            if(symbolLayerIconFeatureList.size()>=1)
+            {
+                symbolLayerIconFeatureList.set(0,Feature.fromGeometry(
+                        Point.fromLngLat(driver_pt.longitude(), driver_pt.latitude())));
+            }
+            else
+            {
+                symbolLayerIconFeatureList.add(0,Feature.fromGeometry(
+                        Point.fromLngLat(driver_pt.longitude(), driver_pt.latitude())));
+            }
+
+            symbolLayerIconFeatureList.add(1,Feature.fromGeometry(
+                    Point.fromLngLat(customer_pt.longitude(), customer_pt.latitude())));
+
+            symbolLayerIconFeatureList.add(0,Feature.fromGeometry(
+                    Point.fromLngLat(destination_pt.longitude(), destination_pt.latitude())));
+
+
+
+            //***********************************************************************************
+
+            mapboxMap.setStyle(new Style.Builder().fromUri("mapbox://styles/mapbox/cjf4m44iw0uza2spb3q0a7s41")
+
+// Add the SymbolLayer icon image to the map style
+                    .withImage(ICON_ID, BitmapFactory.decodeResource(
+                            MainActivity.this.getResources(), R.drawable.mapbox_marker_icon_default))
+
+// Adding a GeoJson source for the SymbolLayer icons.
+                    .withSource(new GeoJsonSource(SOURCE_ID,
+                            FeatureCollection.fromFeatures(symbolLayerIconFeatureList)))
+
+// Adding the actual SymbolLayer to the map style. An offset is added that the bottom of the red
+// marker icon gets fixed to the coordinate, rather than the middle of the icon being fixed to
+// the coordinate point. This is offset is not always needed and is dependent on the image
+// that you use for the SymbolLayer icon.
+                    .withLayer(new SymbolLayer(LAYER_ID, SOURCE_ID)
+                            .withProperties(
+                                    iconImage(ICON_ID),
+                                    iconAllowOverlap(true),
+                                    iconIgnorePlacement(true)
+                            )
+                    ), new Style.OnStyleLoaded() {
+                @Override
+                public void onStyleLoaded(@NonNull Style style) {
+
+// Map is set up and the style has loaded. Now you can add additional data or make other map adjustments.
+
+
+                }
+            });
+
+
+            getRoute(driver_pt,customer_pt);
+
 
         } catch (JSONException e) {
             e.printStackTrace();
         }
     }
+
+
+
+
+
+    @SuppressLint("LongLogTag")
+    public void arrageMarkers()
+    {
+        mapboxMap.setStyle(new Style.Builder().fromUri("mapbox://styles/mapbox/cjf4m44iw0uza2spb3q0a7s41")
+
+// Add the SymbolLayer icon image to the map style
+                .withImage(ICON_ID, BitmapFactory.decodeResource(
+                        MainActivity.this.getResources(), R.drawable.mapbox_marker_icon_default))
+
+// Adding a GeoJson source for the SymbolLayer icons.
+                .withSource(new GeoJsonSource(SOURCE_ID,
+                        FeatureCollection.fromFeatures(symbolLayerIconFeatureList)))
+
+// Adding the actual SymbolLayer to the map style. An offset is added that the bottom of the red
+// marker icon gets fixed to the coordinate, rather than the middle of the icon being fixed to
+// the coordinate point. This is offset is not always needed and is dependent on the image
+// that you use for the SymbolLayer icon.
+                .withLayer(new SymbolLayer(LAYER_ID, SOURCE_ID)
+                        .withProperties(
+                                iconImage(ICON_ID),
+                                iconAllowOverlap(true),
+                                iconIgnorePlacement(true)
+                        )
+                ), new Style.OnStyleLoaded() {
+            @Override
+            public void onStyleLoaded(@NonNull Style style) {
+                // Map is set up and the style has loaded. Now you can add additional data or make other map adjustments
+            }
+        });
+        if(symbolLayerIconFeatureList.size()>0)
+        {
+            if(symbolLayerIconFeatureList.size()>2)
+            {
+                getRoute(driver_pt,customer_pt);
+            }
+            else
+            {
+                Log.e("From source to dest","get route");
+                Toast.makeText(getApplicationContext(),"Your ambulance has arrived",Toast.LENGTH_LONG).show();
+                SharedPreferences sh = getSharedPreferences("MySharedPref", MODE_PRIVATE);
+                SharedPreferences.Editor myEdit = sh.edit();
+                myEdit.putString("ride_started","yes");
+                myEdit.apply();
+                getRoute(customer_pt,destination_pt);
+            }
+
+        }
+
+
+    }
 }
+
 
 class GeocoderHandler extends Handler {
     @Override
@@ -696,6 +806,6 @@ class GeocoderHandler extends Handler {
                 result = null;
         }
         // replace by what you need to do
-        MainActivity.txtSource.setText(result);
+//        MainActivity.txtSource.setText(result);
     }
 }
